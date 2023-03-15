@@ -11,7 +11,6 @@ export default function MouseTrack() {
   const [position, setPosition] = React.useState({ x: 0, y: 0 });
   const [rotates, setRotates] = React.useState([]);
 
-  // let space = 16;
 
   const hearts = new Array(198);
   hearts.fill(0);
