@@ -1,0 +1,18 @@
+.lyric_view {
+  width: 100vw;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 1%;
+  padding-bottom: 3%;
+}
+
+.lyric_item_view {
+  font-family: '得意黑';
+  height: 10%;
+  display: flex;
+  align-items: center;
+  transition: 100ms all ease;
+}

@@ -1,0 +1,85 @@
+.page {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(227, 246, 246);
+}
+
+.cover {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  margin-top: 3%;
+}
+
+.cover.rotate {
+  animation-name: rotate;
+  animation-duration: 3.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.cover.rotate.pause {
+  animation-play-state: paused;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.progress_bar_view {
+  display: flex;
+  margin-bottom: 5%;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+}
+
+.button_view {
+  width: 16px;
+  height: 20px;
+  left: 25%;
+  margin-right: 13px;
+}
+
+.button {
+  box-sizing: border-box;
+  height: 20px;
+  border-style: solid;
+  border-color: transparent #000000 transparent #000000;
+  transition: 100ms all ease;
+  cursor: pointer;
+}
+
+.button.play {
+  width: 0px;
+  border-width: 10px 0px 10px 16px;
+}
+
+.button.pause {
+  width: 16px;
+  border-width: 0px 3px 0px 3px;
+}
+
+.button:hover {
+  border-color: transparent #404040 transparent #404040;
+}
+
+.song_current_time_view {
+  margin-right: 15px;
+  margin-bottom: 3px;
+}
+
+.song_position_view {
+  margin-left: 15px;
+  margin-bottom: 3px;
+}
