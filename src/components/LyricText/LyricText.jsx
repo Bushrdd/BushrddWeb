@@ -2,10 +2,14 @@ import * as React from 'react';
 
 import './LyricText.css'
 
-export default function LyricText(props) {
+export default function LyricText(props, ref) {
   const [lyricObjArr, setLyricObjArr] = React.useState([{ text: '', time: '' }]);//所有歌词数组
   const [currentLyricObjArr, setCurrentLyricObjArr] = React.useState([{ text: '', time: '' }]);//正在滚动的歌词数组
   const [lyricAlpha, setLyricAlpha] = React.useState([0.3, 0.4, 0.6, 0.7, 1, 0.7, 0.6, 0.4, 0.3]);//正在滚动的歌词数组
+  const [currentLineIndex, setCurrentLineIndex] = React.useState(4);//当前播放的行标，前四行空格所以4开始
+  // const [lyricObjArr, setLyricObjArr] = React.useState([{ text: '', time: '' }]);//所有歌词数组
+
+
 
 
   React.useEffect(() => {
@@ -17,9 +21,15 @@ export default function LyricText(props) {
   }, [])
 
   function parseLyricData(lyricData) {
+    // console.log(lyricData)
     let tmpLyricObjArr = []
     let lyricsArr = lyricData.split("\n")
-    // console.log(lyricsArr.length);
+    for (var j = 0; j < 4; j++) {
+      let obj = {}
+      obj.time = 0;
+      obj.text = " ";
+      tmpLyricObjArr.push(obj)
+    }
     for (let i = 0; i < lyricsArr.length; i++) {
       if (lyricsArr[i].indexOf('[') == 0) {
         let obj = {}
@@ -33,22 +43,43 @@ export default function LyricText(props) {
         let text = lyricsArr[i].substring(midCharIndex + 1, lyricsArr[i].length);
         obj.time = timeSeconds;
         obj.text = text == "" ? "-" : text;
+        // console.log(obj)
         if (text != "") {
           tmpLyricObjArr.push(obj)
         }
       }
     }
+    for (var j = 0; j < 4; j++) {
+      let obj = {}
+      obj.time = 1000;
+      obj.text = " ";
+      tmpLyricObjArr.push(obj)
+    }
+    console.log("歌词：")
+    console.log(tmpLyricObjArr)
     setLyricObjArr(tmpLyricObjArr);
     setCurrentLyricObjArr(tmpLyricObjArr.slice(0, 9));
   }
 
-  function arrowMouseDown(event) {
-    props.arrowMouseDown(event.clientX);
+  const updateLyric = (currentTime) => {
+    // console.log("currentTime: " + currentTime);
+    for (var i = 0; i < lyricObjArr.length; i++) {
+      if (lyricObjArr[i + 1].time <= currentTime) {//播放时间到达下一行时间之后了，换行
+        let nextLineIndex = i + 1;
+        if (lyricObjArr[nextLineIndex + 1].time > currentTime) {
+          setCurrentLineIndex(nextLineIndex);
+          setCurrentLyricObjArr(lyricObjArr.slice(nextLineIndex - 4, nextLineIndex + 5));
+          break;
+        }
+      } else {
+        break;
+      }
+    }
   }
 
-  function arrowMouseUp(event) {
-    props.arrowMouseUp();
-  }
+  React.useImperativeHandle(ref, () => ({
+    updateLyric,
+  }));
 
   //分:秒转换为秒数
   const stringToSeconds = (timeString) => {
@@ -81,3 +112,4 @@ export default function LyricText(props) {
     </div>
   )
 }
+LyricText = React.forwardRef(LyricText);
