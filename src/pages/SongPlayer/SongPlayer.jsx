@@ -4,6 +4,7 @@ import { Slider, message } from 'antd';
 
 import './SongPlayer.css'
 import LyricText from '../../components/LyricText/LyricText';
+import MapleIcons from '../../components/MapleIcons/MapleIcons';
 
 export default function SongPlayer() {
   const [toast, contextHolder] = message.useMessage();
@@ -22,22 +23,12 @@ export default function SongPlayer() {
   const [songSrc, setSongSrc] = React.useState("");//歌曲路径
   const [audio, setAudio] = React.useState(null);//歌曲路径
   const lyricRef = React.useRef({});
-
+  const MapleIconRef = React.useRef({});
 
   React.useEffect(() => {
-    // const audio = new Audio('/songs/枫.flac');
-    // console.log(11111);
-    // const audio = new Audio("/songs/虎山行.mp3");
-    // console.log(audio)
-    // audio.addEventListener('canplay ', () => {
-    //   console.log('音乐时长：', audio.duration);
-    //   audio.play();
-    // });
-
-    // audio.play();
-    // setSongSrc("/songs/虎山行.mp3");
-    // setSongSrc("/songs/枫.flac");
     setSongSrc("/songs/枫.mp3");
+    document.getElementById('audio').load();
+
     return () => {
       if (audio == null) {
         toast.open({
@@ -118,6 +109,7 @@ export default function SongPlayer() {
       setBtnPlayClass(['button', 'play']);
       setIsPlaying(false);
       setCoverClass(['cover', 'rotate', 'pause']);
+      MapleIconRef.current.stopIcons();
       setIsRotate(false);
     } else {//继续
       if (audio == null) {
@@ -132,6 +124,7 @@ export default function SongPlayer() {
       setBtnPlayClass(['button', 'pause']);
       setIsPlaying(true);
       setCoverClass(['cover', 'rotate']);
+      MapleIconRef.current.playIcons();
       setIsRotate(true);
     }
   }
@@ -196,7 +189,15 @@ export default function SongPlayer() {
   return (
     <div className='page' onMouseUp={arrowMouseUp} onMouseMove={handleMouseMove}>
       {contextHolder}
-      <img className={coverClass.join(' ')} onClick={clickCover} src='/images/maple.jpg' />
+      <div className='cover_view'>
+        <img
+          alt=''
+          className={coverClass.join(' ')}
+          onClick={clickCover}
+          src='/images/maple_cover.jpg'
+        />
+        <MapleIcons ref={MapleIconRef} isPlaying={isPlaying} />
+      </div>
       <LyricText ref={lyricRef} />
       <audio
         id='audio'
@@ -207,10 +208,12 @@ export default function SongPlayer() {
         onEnded={onEnded}
         onTimeUpdate={onTimeUpdate}
       />
+
       <div className='progress_bar_view'>
         <div className='button_view'>
           <div className={btnPlayClass.join(' ')} onClick={btnPlay} />
         </div>
+
         <div className='song_current_time_view'>{currentPosition}</div>
         <SeekBar
           arrowMouseDown={arrowMouseDown}
@@ -218,6 +221,7 @@ export default function SongPlayer() {
           activeWidth={currentMarginLeft * 2}
         />
         <div className='song_position_view'>{secondsToString(songDuration)}</div>
+
       </div>
     </div >
   )

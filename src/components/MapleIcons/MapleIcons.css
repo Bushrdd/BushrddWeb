@@ -1,0 +1,13 @@
+.maple_icon_view {
+  height: 20px;
+  width: 20px;
+  position: absolute;
+  z-index: 0;
+}
+
+.maple_icon {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transition-timing-function: linear;
+}

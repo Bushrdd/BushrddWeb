@@ -8,11 +8,20 @@
   background-color: rgb(227, 246, 246);
 }
 
-.cover {
+.cover_view {
   height: 100px;
   width: 100px;
-  border-radius: 50%;
+  display: flex;
   margin-top: 3%;
+  justify-content: center;
+  align-items: center;
+}
+
+.cover {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  z-index: 1;
 }
 
 .cover.rotate {
@@ -27,11 +36,11 @@
 }
 
 @keyframes rotate {
-  from {
+  0% {
     transform: rotate(0deg);
   }
 
-  to {
+  100% {
     transform: rotate(360deg);
   }
 }

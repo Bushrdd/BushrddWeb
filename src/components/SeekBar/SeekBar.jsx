@@ -13,8 +13,8 @@ export default function SeekBar(props) {
   }
 
   return (
-    <view className='seekBar'>
-      <view
+    <div className='seekBar'>
+      <div
         className='active'
         style={{ width: `${props.activeWidth}%` }} />
       <img
@@ -23,7 +23,7 @@ export default function SeekBar(props) {
         draggable={true}
         style={{ marginLeft: `${props.marginLeft}%` }}
         src='/images/seekbar_arrow.png' />
-      <view className='background' />
-    </view >
+      <div className='background' />
+    </div >
   )
 }
