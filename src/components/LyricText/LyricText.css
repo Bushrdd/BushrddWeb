@@ -11,7 +11,8 @@
 
 .lyric_item_view {
   font-family: '得意黑';
-  height: 10%;
+  flex: 1;
+  max-height: 10%;
   display: flex;
   align-items: center;
   transition: 100ms all ease;

@@ -102,7 +102,7 @@ export default function LyricText(props, ref) {
             className='lyric_item_view'
             style={{
               opacity: lyricAlpha[index],
-              fontSize: index == 4 ? "25px" : "20px",
+              fontSize: index == 4 ? "1.65vw" : "1.2vw",
             }}
           >
             {item.text}
