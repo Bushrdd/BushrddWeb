@@ -24,13 +24,13 @@ export default function MapleIcons(props, ref) {
     }
     setMapleIcons(tmpMapleIcons);
     setMapleIconsCount(tempCount);
-    console.log("初始化" + playMapleIconCount + "个icon：");
-    console.log(tmpMapleIcons);
+    // console.log("初始化" + playMapleIconCount + "个icon：");
+    // console.log(tmpMapleIcons);
   }
 
   function handleTransitionEnd(element) {
-    console.log("icon-" + element.target.id + '的动画播放结束啦！');
-    console.log(element);
+    // console.log("icon-" + element.target.id + '的动画播放结束啦！');
+    // console.log(element);
     let arr = JSON.parse(JSON.stringify(mapleIcons));
     let index = getIndexById(arr, element.target.id);
     if (index == -1) {
@@ -39,14 +39,14 @@ export default function MapleIcons(props, ref) {
     arr.splice(index, 1);//移除旧的
     let newId = mapleIconsCount;
     arr.push(getNewMapleIconObj(newId));//添加一个新的
-    console.log("除旧" + element.target.id + "迎新" + newId);
-    console.log(arr);
+    // console.log("除旧" + element.target.id + "迎新" + newId);
+    // console.log(arr);
 
     if (props.isPlaying) {
       let newIndex = getIndexById(arr, newId - 1);
       let objPlay = arr[newIndex];
-      console.log("播放 icon-" + objPlay.id);
-      console.log(objPlay);
+      // console.log("播放 icon-" + objPlay.id);
+      // console.log(objPlay);
       updatePlayMapleIconObj(objPlay, newIndex);
     }
     setMapleIcons(arr);
@@ -56,11 +56,11 @@ export default function MapleIcons(props, ref) {
 
   function playIcons() {
     let tempmapleIcons = JSON.parse(JSON.stringify(mapleIcons));
-    console.log(mapleIcons);
+    // console.log(mapleIcons);
     for (var i = 0; i < playMapleIconCount - 1; i++) {
       updatePlayMapleIconObj(tempmapleIcons[i], i);
     }
-    console.log(tempmapleIcons);
+    // console.log(tempmapleIcons);
     setMapleIcons(tempmapleIcons);
   }
 

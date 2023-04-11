@@ -1,12 +1,15 @@
 import * as React from 'react';
 import SeekBar from '../../components/SeekBar/SeekBar';
 import { Slider, message } from 'antd';
+// import { drawCurve } from "../../utils/AudioCurve";
 
 import './SongPlayer.css'
 import LyricText from '../../components/LyricText/LyricText';
 import MapleIcons from '../../components/MapleIcons/MapleIcons';
+import AudioCurve from "../../utils/AudioCurve";
 
 export default function SongPlayer() {
+  const { drawCurve } = AudioCurve('zxddddd', 50);
   const [toast, contextHolder] = message.useMessage();
   const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);//网页总宽度
   const [coverClass, setCoverClass] = React.useState(['cover']);//封面样式
@@ -27,6 +30,7 @@ export default function SongPlayer() {
 
   React.useEffect(() => {
     setSongSrc("/songs/枫.mp3");
+    // console.log("setSongSrc");
     document.getElementById('audio').load();
 
     return () => {
@@ -45,11 +49,26 @@ export default function SongPlayer() {
 
 
   function onCanPlay(event) {
-    // console.log(event);
+    console.log("onCanPlay:");
+    console.log(event);
 
     setSongDuration(event.target.duration);
 
     setAudio(event.target);
+    
+    // let audioStream = event.target.captureStream();
+    // console.log(audioStream);
+    // drawCurve(audioStream);
+  }
+
+  function handleOnPlay(event) {
+    console.log("onPlay:");
+    console.log(event);
+  }
+
+  function handleOnPlaying(event) {
+    console.log("onPlaying:");
+    console.log(event);
   }
 
   function onTimeUpdate(event) {
@@ -210,6 +229,8 @@ export default function SongPlayer() {
         preload={"auto"}
         autoPlay={false}
         onCanPlay={onCanPlay}
+        onPlay={handleOnPlay}
+        onPlaying={handleOnPlaying}
         onEnded={onEnded}
         onTimeUpdate={onTimeUpdate}
       />
