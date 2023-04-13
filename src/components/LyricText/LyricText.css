@@ -1,6 +1,6 @@
 .lyric_view {
   width: 100vw;
-  flex: 1;
+  height: 100px;
   display: flex;
   justify-content: center;
   flex-direction: column;

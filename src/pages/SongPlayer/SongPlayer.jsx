@@ -13,7 +13,8 @@ export default function SongPlayer() {
   const [toast, contextHolder] = message.useMessage();
   const [myLog, setMyLog] = React.useState("1");
   const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);//网页总宽度
-  const [coverClass, setCoverClass] = React.useState(['cover']);//封面样式
+  const [windowHeight, setWindowHeight] = React.useState(window.innerHeight);//网页总高度
+  const [coverClass, setCoverClass] = React.useState(['cover_image']);//封面样式
   const [btnPlayClass, setBtnPlayClass] = React.useState(['button', 'play']);//开始按钮样式
   const [isRotate, setIsRotate] = React.useState(false);//封面是否旋转
   const [currentPosition, setCurrentPosition] = React.useState("00:00");//已播时长
@@ -108,7 +109,7 @@ export default function SongPlayer() {
     audio.currentTime = 0;
     setBtnPlayClass(['button', 'play']);
     setIsPlaying(false);
-    setCoverClass(['cover', 'rotate', 'pause']);
+    setCoverClass(['cover_image', 'rotate', 'pause']);
     setIsRotate(false);
     setMarginLeft(0);//更新进度条
     setCurrentMarginLeft(0);
@@ -123,7 +124,7 @@ export default function SongPlayer() {
       audio.pause();
       setBtnPlayClass(['button', 'play']);
       setIsPlaying(false);
-      setCoverClass(['cover', 'rotate', 'pause']);
+      setCoverClass(['cover_image', 'rotate', 'pause']);
       MapleIconRef.current.stopIcons();
       setIsRotate(false);
     } else {//继续
@@ -134,7 +135,7 @@ export default function SongPlayer() {
       }
       setBtnPlayClass(['button', 'pause']);
       setIsPlaying(true);
-      setCoverClass(['cover', 'rotate']);
+      setCoverClass(['cover_image', 'rotate']);
       MapleIconRef.current.playIcons();
       setIsRotate(true);
     }
@@ -202,12 +203,15 @@ export default function SongPlayer() {
       className='page'
       onMouseUp={arrowMouseUp}
       onMouseMove={handleMouseMove}
-    >{myLog}
+      style={{ height : `${windowHeight}px` }}
+    >
       <img
         className="background_img"
         src='/images/bg.jpg'
       />
+
       {contextHolder}
+
       <div className='cover_view'>
         <img
           alt=''
@@ -217,7 +221,9 @@ export default function SongPlayer() {
         />
         <MapleIcons ref={MapleIconRef} isPlaying={isPlaying} />
       </div>
+
       <LyricText ref={lyricRef} />
+
       <audio
         id='audio'
         src={songSrc}

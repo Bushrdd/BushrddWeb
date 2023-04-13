@@ -4,8 +4,9 @@ import './LyricText.css'
 
 export default function LyricText(props, ref) {
   const [lyricObjArr, setLyricObjArr] = React.useState([{ text: '', time: '' }]);//所有歌词数组
-  const [currentLyricObjArr, setCurrentLyricObjArr] = React.useState([{ text: '', time: '' }]);//正在滚动的歌词数组
-  const [lyricAlpha, setLyricAlpha] = React.useState([0.3, 0.4, 0.6, 0.7, 1, 0.7, 0.6, 0.4, 0.3]);//正在滚动的歌词数组
+  // const [currentLyricObjArr, setCurrentLyricObjArr] = React.useState([{ text: '', time: '' }]);//正在滚动的歌词数组
+  // const [lyricAlpha, setLyricAlpha] = React.useState([0.3, 0.4, 0.6, 0.7, 1, 0.7, 0.6, 0.4, 0.3]);//正在滚动的歌词数组透明度
+  const [currentLyricObj, setCurrentLyricObj] = React.useState({ text: '', time: '' });//正在滚动的歌词
   const [currentLineIndex, setCurrentLineIndex] = React.useState(4);//当前播放的行标，前四行空格所以4开始
   // const [lyricObjArr, setLyricObjArr] = React.useState([{ text: '', time: '' }]);//所有歌词数组
 
@@ -24,12 +25,12 @@ export default function LyricText(props, ref) {
     // console.log(lyricData)
     let tmpLyricObjArr = []
     let lyricsArr = lyricData.split("\n")
-    for (var j = 0; j < 4; j++) {
-      let obj = {}
-      obj.time = 0;
-      obj.text = " ";
-      tmpLyricObjArr.push(obj)
-    }
+    // for (var j = 0; j < 4; j++) {//占位
+    //   let obj = {}
+    //   obj.time = 0;
+    //   obj.text = " ";
+    //   tmpLyricObjArr.push(obj)
+    // }
     for (let i = 0; i < lyricsArr.length; i++) {
       if (lyricsArr[i].indexOf('[') == 0) {
         let obj = {}
@@ -58,7 +59,8 @@ export default function LyricText(props, ref) {
     console.log("歌词：")
     console.log(tmpLyricObjArr)
     setLyricObjArr(tmpLyricObjArr);
-    setCurrentLyricObjArr(tmpLyricObjArr.slice(0, 9));
+    // setCurrentLyricObjArr(tmpLyricObjArr.slice(0, 9));
+    setCurrentLyricObj(tmpLyricObjArr[0]);
   }
 
   const updateLyric = (currentTime) => {
@@ -68,7 +70,8 @@ export default function LyricText(props, ref) {
         let nextLineIndex = i + 1;
         if (lyricObjArr[nextLineIndex + 1].time > currentTime) {
           setCurrentLineIndex(nextLineIndex);
-          setCurrentLyricObjArr(lyricObjArr.slice(nextLineIndex - 4, nextLineIndex + 5));
+          // setCurrentLyricObjArr(lyricObjArr.slice(nextLineIndex - 4, nextLineIndex + 5));
+          setCurrentLyricObj(lyricObjArr[nextLineIndex]);
           break;
         }
       } else {
@@ -95,7 +98,7 @@ export default function LyricText(props, ref) {
 
   return (
     <div className='lyric_view'>
-      {currentLyricObjArr.map((item, index) => {
+      {/* {currentLyricObjArr.map((item, index) => {
         return (
           <div
             key={index}
@@ -108,7 +111,14 @@ export default function LyricText(props, ref) {
             {item.text}
           </div>
         )
-      })}
+      })} */}
+      <div
+        className='lyric_item_view'
+        style={{
+        }}
+      >
+        {currentLyricObj.text}
+      </div>
     </div>
   )
 }
