@@ -10,7 +10,7 @@
   border-width: 1px;
   border-color: rgba(0, 0, 0, 0.4);
   height: 4px;
-  border-radius: 2px;
+  border-radius: 3px;
   background-color: #ec3258;
 }
 
@@ -28,7 +28,7 @@
   border-style: solid;
   border-width: 1px;
   border-color: rgba(0, 0, 0, 0.2);
-  border-radius: 2px;
+  border-radius: 3px;
   height: 4px;
   flex: 1;
   background-color: #ec325736;
