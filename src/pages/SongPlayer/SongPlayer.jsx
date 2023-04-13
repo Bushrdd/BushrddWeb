@@ -234,9 +234,9 @@ export default function SongPlayer() {
         onTimeUpdate={onTimeUpdate}
       />
 
-      <div className='progress_bar_view'>
+      <div className='progress_bar_view' onClick={btnPlay} >
         <div className='button_view'>
-          <div className={btnPlayClass.join(' ')} onClick={btnPlay} />
+          <div className={btnPlayClass.join(' ')} />
         </div>
 
         <div className='song_current_time_view'>{currentPosition}</div>

@@ -67,10 +67,11 @@
 }
 
 .button_view {
-  width: 16px;
+  width: 36px;
   height: 20px;
   left: 25%;
-  margin-right: 13px;
+  display: flex;
+  justify-content: center;
 }
 
 .button {
@@ -97,11 +98,13 @@
 }
 
 .song_current_time_view {
-  margin-right: 15px;
+  width: 15%;
+  text-align: center;
   margin-bottom: 3px;
 }
 
 .song_position_view {
-  margin-left: 15px;
+  width: 15%;
+  text-align: center;
   margin-bottom: 3px;
 }
