@@ -32,7 +32,8 @@ export default function SongPlayer() {
   const SONG_STATE_IDLE = 0;
   const SONG_STATE_PLAYING = 1;
   const SONG_STATE_PAUSED = 2;
-  const URL = "/songs/枫.mp3";
+  // const URL = "/songs/枫.mp3";
+  const URL = "/songs/暗号.mp3";
 
   React.useEffect(() => {
     setSongSrc(URL);
@@ -90,7 +91,7 @@ export default function SongPlayer() {
       setMarginLeft(currrntPercent);//更新进度条
       setCurrentMarginLeft(currrntPercent);
     }
-    lyricRef.current.updateLyric(currentTime + 1.5);
+    lyricRef.current.updateLyric(currentTime + 0.5);//调整延迟
   }
 
   function onEnded(event) {
@@ -234,8 +235,8 @@ export default function SongPlayer() {
         onTimeUpdate={onTimeUpdate}
       />
 
-      <div className='progress_bar_view' onClick={btnPlay} >
-        <div className='button_view'>
+      <div className='progress_bar_view'>
+        <div className='button_view' onClick={btnPlay} >
           <div className={btnPlayClass.join(' ')} />
         </div>
 
