@@ -11,6 +11,7 @@ import AudioCurve from "../../utils/AudioCurve";
 export default function SongPlayer() {
   const { drawCurve } = AudioCurve('zxddddd', 50);
   const [toast, contextHolder] = message.useMessage();
+  const [myLog, setMyLog] = React.useState("1");
   const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);//网页总宽度
   const [coverClass, setCoverClass] = React.useState(['cover']);//封面样式
   const [btnPlayClass, setBtnPlayClass] = React.useState(['button', 'play']);//开始按钮样式
@@ -27,11 +28,17 @@ export default function SongPlayer() {
   const [audio, setAudio] = React.useState(null);//歌曲路径
   const lyricRef = React.useRef({});
   const MapleIconRef = React.useRef({});
+  const URL = "/songs/枫.mp3";
 
   React.useEffect(() => {
-    setSongSrc("/songs/枫.mp3");
-    // console.log("setSongSrc");
-    document.getElementById('audio').load();
+    setSongSrc(URL);
+
+    try {
+      document.getElementById('audio').load();
+    } catch (error) {
+      setMyLog(myLog + "\n" + error)
+    }
+    // setMyLog(myLog+"load\n"+document.getElementById('audio'))
 
     return () => {
       if (audio == null) {
@@ -50,12 +57,14 @@ export default function SongPlayer() {
 
   function onCanPlay(event) {
     console.log("onCanPlay:");
+    setMyLog(myLog + "onCanPlay")
     console.log(event);
 
     setSongDuration(event.target.duration);
 
     setAudio(event.target);
-    
+    event.target.play();
+
     // let audioStream = event.target.captureStream();
     // console.log(audioStream);
     // drawCurve(audioStream);
@@ -107,23 +116,10 @@ export default function SongPlayer() {
   }
 
   function clickCover() {
-    if (isRotate) {//暂停旋转
-
-    } else {//开始旋转
-
-    }
   }
 
   function btnPlay() {
     if (isPlaying) {//暂停
-      if (audio == null) {
-        toast.open({
-          type: 'error',
-          content: '歌曲加载失败！',
-          duration: 1,
-        });
-        return;
-      }
       audio.pause();
       setBtnPlayClass(['button', 'play']);
       setIsPlaying(false);
@@ -131,15 +127,11 @@ export default function SongPlayer() {
       MapleIconRef.current.stopIcons();
       setIsRotate(false);
     } else {//继续
-      if (audio == null) {
-        toast.open({
-          type: 'error',
-          content: '歌曲加载失败！',
-          duration: 1,
-        });
-        return;
+      if (audio == null) {//未加载
+        document.getElementById('audio').load();
+      } else {
+        audio.play();
       }
-      audio.play();
       setBtnPlayClass(['button', 'pause']);
       setIsPlaying(true);
       setCoverClass(['cover', 'rotate']);
@@ -210,11 +202,11 @@ export default function SongPlayer() {
       className='page'
       onMouseUp={arrowMouseUp}
       onMouseMove={handleMouseMove}
-    >
+    >{myLog}
       <img
-          className="background_img"
-          src='/images/bg.jpg'
-        />
+        className="background_img"
+        src='/images/bg.jpg'
+      />
       {contextHolder}
       <div className='cover_view'>
         <img
@@ -229,7 +221,7 @@ export default function SongPlayer() {
       <audio
         id='audio'
         src={songSrc}
-        preload={"auto"}
+        preload="none"
         autoPlay={false}
         onCanPlay={onCanPlay}
         onPlay={handleOnPlay}
