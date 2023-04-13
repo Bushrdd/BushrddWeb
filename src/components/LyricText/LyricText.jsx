@@ -65,6 +65,10 @@ export default function LyricText(props, ref) {
 
   const updateLyric = (currentTime) => {
     // console.log("currentTime: " + currentTime);
+    if (currentTime == 0) {
+      setCurrentLineIndex(0);
+      setCurrentLyricObj(lyricObjArr[0]);
+    }
     for (var i = 0; i < lyricObjArr.length; i++) {
       if (lyricObjArr[i + 1].time <= currentTime) {//播放时间到达下一行时间之后了，换行
         let nextLineIndex = i + 1;

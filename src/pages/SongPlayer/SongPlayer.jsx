@@ -11,7 +11,6 @@ import AudioCurve from "../../utils/AudioCurve";
 export default function SongPlayer() {
   const { drawCurve } = AudioCurve('zxddddd', 50);
   const [toast, contextHolder] = message.useMessage();
-  const [myLog, setMyLog] = React.useState("1");
   const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);//网页总宽度
   const [windowHeight, setWindowHeight] = React.useState(window.innerHeight);//网页总高度
   const [coverClass, setCoverClass] = React.useState(['cover_image']);//封面样式
@@ -19,7 +18,8 @@ export default function SongPlayer() {
   const [isRotate, setIsRotate] = React.useState(false);//封面是否旋转
   const [currentPosition, setCurrentPosition] = React.useState("00:00");//已播时长
   const [songDuration, setSongDuration] = React.useState(0);//总时长
-  const [isPlaying, setIsPlaying] = React.useState(false);//是否在播放
+  // const [isPlaying, setIsPlaying] = React.useState(false);//是否在播放
+  const [songStatus, setSongStatus] = React.useState(0);//歌曲当前状态
   const [isMoving, setIsMoving] = React.useState(false);//是否在拖动进度条
   const [startX, setStartX] = React.useState(0);//拖动进度条时的起始位置
   const [marginLeft, setMarginLeft] = React.useState(0);//拖动进度条时上次位置
@@ -29,17 +29,13 @@ export default function SongPlayer() {
   const [audio, setAudio] = React.useState(null);//歌曲路径
   const lyricRef = React.useRef({});
   const MapleIconRef = React.useRef({});
+  const SONG_STATE_IDLE = 0;
+  const SONG_STATE_PLAYING = 1;
+  const SONG_STATE_PAUSED = 2;
   const URL = "/songs/枫.mp3";
 
   React.useEffect(() => {
     setSongSrc(URL);
-
-    try {
-      document.getElementById('audio').load();
-    } catch (error) {
-      setMyLog(myLog + "\n" + error)
-    }
-    // setMyLog(myLog+"load\n"+document.getElementById('audio'))
 
     return () => {
       if (audio == null) {
@@ -57,14 +53,15 @@ export default function SongPlayer() {
 
 
   function onCanPlay(event) {
+    if (songStatus != SONG_STATE_IDLE) {
+      return;
+    }
     console.log("onCanPlay:");
-    setMyLog(myLog + "onCanPlay")
     console.log(event);
-
     setSongDuration(event.target.duration);
-
     setAudio(event.target);
     event.target.play();
+    setSongStatus(SONG_STATE_PLAYING);
 
     // let audioStream = event.target.captureStream();
     // console.log(audioStream);
@@ -108,7 +105,7 @@ export default function SongPlayer() {
     audio.pause();
     audio.currentTime = 0;
     setBtnPlayClass(['button', 'play']);
-    setIsPlaying(false);
+    setSongStatus(SONG_STATE_PAUSED);
     setCoverClass(['cover_image', 'rotate', 'pause']);
     setIsRotate(false);
     setMarginLeft(0);//更新进度条
@@ -120,10 +117,11 @@ export default function SongPlayer() {
   }
 
   function btnPlay() {
-    if (isPlaying) {//暂停
+    if (songStatus == SONG_STATE_PLAYING) {//暂停
       audio.pause();
+      console.log(audio);
       setBtnPlayClass(['button', 'play']);
-      setIsPlaying(false);
+      setSongStatus(SONG_STATE_PAUSED);
       setCoverClass(['cover_image', 'rotate', 'pause']);
       MapleIconRef.current.stopIcons();
       setIsRotate(false);
@@ -132,9 +130,9 @@ export default function SongPlayer() {
         document.getElementById('audio').load();
       } else {
         audio.play();
+        setSongStatus(SONG_STATE_PLAYING);
       }
       setBtnPlayClass(['button', 'pause']);
-      setIsPlaying(true);
       setCoverClass(['cover_image', 'rotate']);
       MapleIconRef.current.playIcons();
       setIsRotate(true);
@@ -203,7 +201,7 @@ export default function SongPlayer() {
       className='page'
       onMouseUp={arrowMouseUp}
       onMouseMove={handleMouseMove}
-      style={{ height : `${windowHeight}px` }}
+      style={{ height: `${windowHeight}px` }}
     >
       <img
         className="background_img"
@@ -219,7 +217,7 @@ export default function SongPlayer() {
           onClick={clickCover}
           src='/images/maple_cover.jpg'
         />
-        <MapleIcons ref={MapleIconRef} isPlaying={isPlaying} />
+        <MapleIcons ref={MapleIconRef} isPlaying={songStatus == SONG_STATE_PLAYING} />
       </div>
 
       <LyricText ref={lyricRef} />
