@@ -245,7 +245,8 @@ export default function SongPlayer() {
           marginLeft={currentMarginLeft}
           activeWidth={currentMarginLeft * 2}
         />
-        <div className='song_position_view'>{secondsToString(songDuration)}</div>
+        <div className='song_position_view'
+          style={{ visibility: songStatus == SONG_STATE_IDLE ? "hidden" : "" }}>{secondsToString(songDuration)}</div>
 
       </div>
     </div >
