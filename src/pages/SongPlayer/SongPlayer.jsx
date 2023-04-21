@@ -37,14 +37,11 @@ export default function SongPlayer() {
 
   React.useEffect(() => {
     setSongSrc(URL);
+    window.addEventListener('resize', handleResize);
 
     return () => {
+      window.removeEventListener('resize', handleResize)
       if (audio == null) {
-        toast.open({
-          type: 'error',
-          content: '歌曲加载失败！',
-          duration: 1,
-        });
         return;
       }
       audio.pause();
@@ -52,6 +49,10 @@ export default function SongPlayer() {
     };
   }, [])
 
+  function handleResize() {
+    console.log("handleResize");
+    setWindowHeight(window.innerHeight);
+  }
 
   function onCanPlay(event) {
     if (songStatus != SONG_STATE_IDLE) {
