@@ -1,18 +1,17 @@
-.page {
+.song_page {
   height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: start;
-
   /* background-repeat: no-repeat;
   background-size: cover;
   background-position: bottom left; */
   /* background-image: url('/images/bg.png'); */
 }
 
-.background_img {
+.song_background_img {
   left: 0;
   top: 0;
   width: 100%;
@@ -98,13 +97,13 @@
 }
 
 .song_current_time_view {
-  width: 15%;
+  width: 60px;
   text-align: center;
   margin-bottom: 3px;
 }
 
 .song_position_view {
-  width: 15%;
+  width: 60px;
   text-align: center;
   margin-bottom: 3px;
 }

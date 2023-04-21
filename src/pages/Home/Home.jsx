@@ -16,8 +16,8 @@ export default function Home() {
   }
 
   return (
-    <div className='page' style={{ height: `${windowHeight}px` }}>
-      <img className='background_img' src='/images/home_bg.jpg' />
+    <div className='home_page' style={{ height: `${windowHeight}px` }}>
+      <img className='home_background_img' src='/images/home_bg.jpg' />
       <a href="https://beian.miit.gov.cn/"
         className='force_url'
       >By Bushrdd - 冀ICP备2023010586号</a>

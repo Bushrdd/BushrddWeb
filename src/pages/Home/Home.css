@@ -1,13 +1,12 @@
-.page {
+.home_page {
   width: 100vw;
   height: 100vh;
   display: flex;
   justify-content: end;
   align-items: center;
-  min-height: -webkit-fill-available;
 }
 
-.background_img {
+.home_background_img {
   left: 0;
   top: 0;
   width: 100%;

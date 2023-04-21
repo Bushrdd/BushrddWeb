@@ -200,16 +200,16 @@ export default function SongPlayer() {
 
   return (
     <div
-      className='page'
+      className='song_page'
       onMouseUp={arrowMouseUp}
       onMouseMove={handleMouseMove}
       style={{ height: `${windowHeight}px` }}
     >
       <img
-        className="background_img"
+        className="song_background_img"
         src='/images/bg.jpg'
       />
-
+      
       {contextHolder}
 
       <div className='cover_view'>
