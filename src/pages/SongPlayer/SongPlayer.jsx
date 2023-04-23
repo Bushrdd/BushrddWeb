@@ -38,6 +38,7 @@ export default function SongPlayer() {
   React.useEffect(() => {
     setSongSrc(URL);
     window.addEventListener('resize', handleResize);
+    document.title = '我害怕你心碎没人为你擦眼泪'
 
     return () => {
       window.removeEventListener('resize', handleResize)
