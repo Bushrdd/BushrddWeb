@@ -33,12 +33,12 @@ export default function SongPlayer() {
   const SONG_STATE_PLAYING = 1;
   const SONG_STATE_PAUSED = 2;
   // const URL = "/songs/枫.mp3";
-  const URL = "/songs/暗号.mp3";
+  const URL = "/songs/很久很久.mp3";
 
   React.useEffect(() => {
     setSongSrc(URL);
     window.addEventListener('resize', handleResize);
-    document.title = '我害怕你心碎没人为你擦眼泪'
+    document.title = '为什么那天我做梦又梦到你'
 
     return () => {
       window.removeEventListener('resize', handleResize)
@@ -93,7 +93,8 @@ export default function SongPlayer() {
       setMarginLeft(currrntPercent);//更新进度条
       setCurrentMarginLeft(currrntPercent);
     }
-    lyricRef.current.updateLyric(currentTime + 0.5);//调整延迟
+    var delay = 0.3;//加速歌词(s)
+    lyricRef.current.updateLyric(currentTime + delay);
   }
 
   function onEnded(event) {
@@ -210,7 +211,7 @@ export default function SongPlayer() {
         className="song_background_img"
         src='/images/bg.jpg'
       />
-      
+
       {contextHolder}
 
       <div className='cover_view'>

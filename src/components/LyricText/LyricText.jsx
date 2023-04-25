@@ -10,7 +10,7 @@ export default function LyricText(props, ref) {
   const [currentLineIndex, setCurrentLineIndex] = React.useState(4);//当前播放的行标，前四行空格所以4开始
   // const [lyricObjArr, setLyricObjArr] = React.useState([{ text: '', time: '' }]);//所有歌词数组
   // const URL = `/lyrics/枫8.lrc`;
-  const URL = `/lyrics/暗号.lrc`;
+  const URL = `/lyrics/很久很久.lrc`;
 
 
 
