@@ -1,6 +1,7 @@
 import * as React from 'react';
 import SeekBar from '../../components/SeekBar/SeekBar';
 import { Slider, message } from 'antd';
+import lottie from 'lottie-web';
 // import { drawCurve } from "../../utils/AudioCurve";
 
 import './SongPlayer.css'
@@ -33,7 +34,8 @@ export default function SongPlayer() {
   const SONG_STATE_PLAYING = 1;
   const SONG_STATE_PAUSED = 2;
   // const URL = "/songs/枫.mp3";
-  const URL = "/songs/很久很久.mp3";
+  // const URL = "/songs/很久很久.mp3";
+  const URL = "http://web.bushrdd.cn/songs/%E6%9A%97%E5%8F%B7.mp3";
 
   React.useEffect(() => {
     setSongSrc(URL);
