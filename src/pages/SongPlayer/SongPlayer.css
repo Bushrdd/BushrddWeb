@@ -11,6 +11,11 @@
   /* background-image: url('/images/bg.png'); */
 }
 
+.loading_anim{
+  width: 50px;
+  height: 100px;
+}
+
 .song_background_img {
   left: 0;
   top: 0;

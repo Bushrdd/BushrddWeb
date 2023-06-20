@@ -10,13 +10,11 @@ export default function LyricText(props, ref) {
   const [currentLineIndex, setCurrentLineIndex] = React.useState(4);//当前播放的行标，前四行空格所以4开始
   // const [lyricObjArr, setLyricObjArr] = React.useState([{ text: '', time: '' }]);//所有歌词数组
   // const URL = `/lyrics/枫8.lrc`;
-  const URL = `http://web.bushrdd.cn/lyrics/暗号.lrc`;
-
-
+  // const URL = `http://web.bushrdd.cn/lyrics/暗号.lrc`;
 
   React.useEffect(() => {
     //加载歌词
-    fetch(URL, {})
+    fetch(props.lyricUrl)
       .then(response => response.text())
       .then(data => parseLyricData(data))
       .catch(error => console.log(error))

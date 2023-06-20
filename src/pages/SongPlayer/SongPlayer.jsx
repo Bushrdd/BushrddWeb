@@ -1,7 +1,8 @@
 import * as React from 'react';
 import SeekBar from '../../components/SeekBar/SeekBar';
 import { Slider, message } from 'antd';
-import lottie from 'lottie-web';
+import Lottie from "react-lottie";
+import loadAnim from "./loading.json";
 // import { drawCurve } from "../../utils/AudioCurve";
 
 import './SongPlayer.css'
@@ -27,7 +28,9 @@ export default function SongPlayer() {
   const [currentMarginLeft, setCurrentMarginLeft] = React.useState(0);//拖动进度条时当前位置
   const [activeWidth, setActiveWidth] = React.useState(0);//已播放长度
   const [songSrc, setSongSrc] = React.useState("");//歌曲路径
-  const [audio, setAudio] = React.useState(null);//歌曲路径
+  const [lyricUrl, setLyricUrl] = React.useState("");//歌词路径
+  const [audio, setAudio] = React.useState(null);//播放器
+  const [loadFinish, setLoadFinish] = React.useState(false);//是否加载完成
   const lyricRef = React.useRef({});
   const MapleIconRef = React.useRef({});
   const SONG_STATE_IDLE = 0;
@@ -35,12 +38,48 @@ export default function SongPlayer() {
   const SONG_STATE_PAUSED = 2;
   // const URL = "/songs/枫.mp3";
   // const URL = "/songs/很久很久.mp3";
-  const URL = "http://web.bushrdd.cn/songs/%E6%9A%97%E5%8F%B7.mp3";
+  const SongApi = "http://bushrdd.cn:8368/getSongList";
+  // const SongApi = "http://localhost:8368/getSongList";
+  // const URL = "http://web.bushrdd.cn/songs/%E6%9A%97%E5%8F%B7.mp3";
 
   React.useEffect(() => {
-    setSongSrc(URL);
+    // setSongSrc(URL);
     window.addEventListener('resize', handleResize);
     document.title = '为什么那天我做梦又梦到你'
+
+    // const formData = new URLSearchParams();
+    // formData.append('username', 'ccc');
+    // formData.append('password', '456');
+
+    fetch(SongApi, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+        // 可根据需要添加其他请求头部信息
+      },
+      // body: JSON.stringify({'username': 'ccc','password':'456' }) // 根据需要设置请求体数据
+      // body: JSON.stringify({ username: 'ccc', password: '456' }) // 根据需要设置请求体数据
+      // body: formData
+    })
+      .then(response => response.json())
+      .then(data => {
+        // 处理返回的数据
+        console.log(data);
+        var songs = data.data;
+        for (var i = 0; i < songs.length; i++) {
+            if(songs[i].today == 1){
+            setSongSrc(songs[i].songUrl);
+            setLyricUrl(songs[i].lyricUrl)
+            setLoadFinish(true);
+            break;
+          }
+        }
+      })
+      .catch(error => {
+        // 处理错误
+        console.error(error);
+      });
 
     return () => {
       window.removeEventListener('resize', handleResize)
@@ -215,46 +254,60 @@ export default function SongPlayer() {
       />
 
       {contextHolder}
+      {loadFinish ? (
+        <div>
+          <div className='cover_view'>
+            <img
+              alt=''
+              className={coverClass.join(' ')}
+              onClick={clickCover}
+              src='/images/maple_cover.jpg'
+            />
+            <MapleIcons ref={MapleIconRef} isPlaying={songStatus == SONG_STATE_PLAYING} />
+          </div>
 
-      <div className='cover_view'>
-        <img
-          alt=''
-          className={coverClass.join(' ')}
-          onClick={clickCover}
-          src='/images/maple_cover.jpg'
-        />
-        <MapleIcons ref={MapleIconRef} isPlaying={songStatus == SONG_STATE_PLAYING} />
-      </div>
+          <LyricText ref={lyricRef} lyricUrl={lyricUrl}/>
 
-      <LyricText ref={lyricRef} />
+          <audio
+            id='audio'
+            src={songSrc}
+            preload="none"
+            autoPlay={false}
+            onCanPlay={onCanPlay}
+            onPlay={handleOnPlay}
+            onPlaying={handleOnPlaying}
+            onEnded={onEnded}
+            onTimeUpdate={onTimeUpdate}
+          />
 
-      <audio
-        id='audio'
-        src={songSrc}
-        preload="none"
-        autoPlay={false}
-        onCanPlay={onCanPlay}
-        onPlay={handleOnPlay}
-        onPlaying={handleOnPlaying}
-        onEnded={onEnded}
-        onTimeUpdate={onTimeUpdate}
-      />
+          <div className='progress_bar_view'>
+            <div className='button_view' onClick={btnPlay} >
+              <div className={btnPlayClass.join(' ')} />
+            </div>
 
-      <div className='progress_bar_view'>
-        <div className='button_view' onClick={btnPlay} >
-          <div className={btnPlayClass.join(' ')} />
-        </div>
+            <div className='song_current_time_view'>{currentPosition}</div>
+            <SeekBar
+              arrowMouseDown={arrowMouseDown}
+              marginLeft={currentMarginLeft}
+              activeWidth={currentMarginLeft * 2}
+            />
+            <div className='song_position_view'
+              style={{ visibility: songStatus == SONG_STATE_IDLE ? "hidden" : "" }}>{secondsToString(songDuration)}</div>
 
-        <div className='song_current_time_view'>{currentPosition}</div>
-        <SeekBar
-          arrowMouseDown={arrowMouseDown}
-          marginLeft={currentMarginLeft}
-          activeWidth={currentMarginLeft * 2}
-        />
-        <div className='song_position_view'
-          style={{ visibility: songStatus == SONG_STATE_IDLE ? "hidden" : "" }}>{secondsToString(songDuration)}</div>
+          </div>
+        </div >
+      ) : (
+        <Lottie
+          options={{
+            loop: true,
+            autoplay: true,
+            animationData: loadAnim,
+            // rendererSettings: {
+            //   preserveAspectRatio: 'xMidYMid slice'
+            // }
+          }} />
 
-      </div>
-    </div >
+      )}
+    </div>
   )
 }

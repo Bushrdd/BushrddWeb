@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import MouseTrack from './pages/MouseTrack/MouseTrack';
 import SongPlayer from './pages/SongPlayer/SongPlayer';
+import Mahjong from './pages/Mahjong/Mahjong';
 import Home from './pages/Home/Home';
 import {
   BrowserRouter as Router,
@@ -24,6 +25,7 @@ root.render(
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/song" element={<SongPlayer />} />
+          <Route path="/mahjong" element={<Mahjong />} />
         </Routes>
       </Router >
     </div>
